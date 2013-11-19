@@ -5,17 +5,6 @@
 #include "alice.h"
 #include <curses.h>
 
-#ifdef ATARI520ST
-#include <osbind.h>
-
-int
-_rchar()
-{
-	return gem_getc();
-}
-
-#endif
-
 /*
  * clear from beginning of line routine
  */

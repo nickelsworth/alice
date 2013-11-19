@@ -318,9 +318,6 @@ int	c;
 FILE	*fp;
 {
 	if (fputc(c, fp) == EOF)
-#ifdef ATARI520ST
-		if( c != EOF )
-#endif
 			writeError(fp);
 }
 

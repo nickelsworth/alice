@@ -27,13 +27,7 @@
 #endif
 
 extern FILE *qfopen();
-
-#ifdef ATARI520ST
-#ifdef MarkWilliams
-long _stksize = 0x1800;
-#endif
-#endif
-
+
 struct al_window main_win;	/* initial window */
 
 curspos cursor;			/* main node the cursor points at */
@@ -119,8 +113,8 @@ int main(int argc, char **argv)
 	extern unsigned int getFreeParas();
 
 #ifdef DEBUG
-	if( argc > 1 && !strcmp( argv[1], "t=" ) )
-		dtrace = stdout;
+	if( argc > 1 && !strcmp( argv[1], "t=" )) 
+	  dtrace = stdout;
 #endif
 
 #ifdef LARGE
@@ -174,7 +168,6 @@ int main(int argc, char **argv)
 #endif
 	/* now we load the templates */
 	origconf = confname;
-
 	while( TRUE ) {
 		char *argline;
 		char lbuf[MAX_LEN_LINE];

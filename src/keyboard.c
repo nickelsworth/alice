@@ -491,12 +491,8 @@ keyget()
 	if( demo_mode )
 		return demoget();
 #endif
-#if defined(unix) || defined(ICON) || defined( ATARI520ST )
-#ifdef ATARI520ST
-	return GemEvent();
-#else 
+#if defined(unix) || defined(ICON)
 	return wgetch(stdscr);
-#endif
 #else
 	while( inbuf_count < KBUF_SIZE && (inbuf_count == 0 || tst_charwait()) )
 		incom_buf[inbuf_count++] = wgetch(stdscr);

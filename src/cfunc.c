@@ -369,11 +369,6 @@ static rint what_computer = 3;
 static rint has_segments = FALSE;
 #endif
 
-#ifdef ATARI520ST
-static rint what_computer = 5;
-static rint has_segments = FALSE;
-#endif
- 
 extern WINDOW *pg_out;
 extern funcptr builtins[];
 extern int step_flag;

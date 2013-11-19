@@ -137,13 +137,6 @@ mainloop()
 			
 			if( WhereDeclsChanged ) {
 				clr_node_flag(WhereDeclsChanged, NF_TCHECKED);
-#ifndef ATARI520ST
-				printt3("mainloop: c_comp_decls(%x, %x, %x)\n",
-						my_scope(WhereDeclsChanged),
-						WhereDeclsChanged,
-						CheckSpeed < 6 ? TC_NOSTUBS :
-						 (TC_DESCEND | TC_FULL) );
-#endif
 				here(4);
 				checkfar(4);
 				c_comp_decls(my_scope(WhereDeclsChanged),

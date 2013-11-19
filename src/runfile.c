@@ -917,14 +917,10 @@ int style;		/* true for text file, false otherwise */
 		if( whfile->f_flags & FIL_SCREEN )
 			prg_output( TRUE, where );
 	 	else
-#ifdef ATARI520ST
-			fputs( where, whfile->desc.f_stream );
-#else
 			if (fputs( where, whfile->desc.f_stream ) == EOF) {
 				tp_error( 0xF0, 0 );
 				run_error(ER(276, writErr));
 				}
-#endif
 		}
 		
 	 else

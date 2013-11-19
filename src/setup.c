@@ -65,11 +65,7 @@ init_interp()
 	undef_bitmap = 0;
 	if( !max_stack_size ) {
 		long mlcalc;
-#ifdef ATARI520ST
-		mlcalc = 5000L;
-#else
 		mlcalc = (malloc_left() - 4096 ) / malloc_divide;
-#endif
 		if( mlcalc < 0 )
 			max_stack_size = 1024;
 		 else if ( mlcalc > 1000000L )

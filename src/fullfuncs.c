@@ -400,7 +400,6 @@ static char *coml_args[MAXARGS];
 
 parse_comline()
 {
-#ifndef ATARI520ST
 	extern char *strtok();
 
 	if( got_comline )
@@ -412,7 +411,6 @@ parse_comline()
 	coml_args[0] = strtok( cmdline_buffer, " \t" );
 	while( coml_args[num_args] && num_args < MAXARGS-1 )
 		coml_args[++num_args] = strtok( (char *)0, " \t" );
-#endif
 }
 
 	
