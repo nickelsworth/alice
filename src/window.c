@@ -27,11 +27,6 @@ int	SaveLines;	/* Number of lines in the old window */
 prep_to_run()
 {
 #ifdef HAS_INTERP
-#ifdef QNX
-	/* flush input buffer of characters on icon */
-	while( getbc(TRUE) )
-		getbc(FALSE);
-#endif
 	if( work_debug(curr_workspace) & DBF_ON ) {
 		change_pg_out(work_owindow(curr_workspace));
 		printt1( "Setting program output to window %x\n", pg_out );

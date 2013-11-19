@@ -1048,7 +1048,4 @@ cSYMBOL_TABLE,
 cDECL_ID,
 
 0 };
-#ifdef QNX
-char	NodeEnd;
-#endif
 

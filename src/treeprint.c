@@ -118,11 +118,6 @@ listp plist;	/* parameter list for call, only present then */
 	printt5("treeprint(thenode=%lx, prcode_index=%d, listcode=%d, def=%lx, plist=%lx)\n",
 		(long)thenode, prcode_index, listcode, (long)def, (long)plist);
 	printt2("out_flag %d, pr_column %d\n", out_flag, pr_column);
-#ifdef QNX
-	if( 0 ) {
-		kl_terminate: goto terminate;
-		}
-#endif
 	/* save cursor attribute coming in */
 	sav_attr(cmsave);
 	asg_attr( Attr_Map[COL_DEFAULT] );	/* clear current attributes */
@@ -187,11 +182,7 @@ if( is_a_list(thenode) ) {
 		treeprint( node_kid(thenode,kidnum), 0, listcode, def, LNIL );
 		if( pr_column > MAX_LEN_LINE - 30 ) {
 			warning( ER(236,"toolong`Line on screen too long") );
-#ifdef QNX
-			goto kl_terminate;
-#else
-			goto terminate; 
-#endif
+			goto terminate;
 			}
 		}
 	}
@@ -498,11 +489,7 @@ if( is_a_list(thenode) ) {
 #endif
 				if( cur_column > MAX_LEN_LINE - 30 ) {
 					warning( ER(236,"toolong`Line on screen too long") );
-#ifdef QNX
-					goto kl_terminate;
-#else
 					goto terminate; 
-#endif
 					}
 				if( node_flag(thenode) & NF_ERROR) {
 					noerror = FALSE;

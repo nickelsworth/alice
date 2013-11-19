@@ -133,13 +133,9 @@ int argc;
 pointer argv;
 symptr symp;
 {
-#ifdef QNX
-	srand( get_ticks() );
-#else
 	long time();  /* no see! */
 
 	srand( (int)time((long *)0) );
-#endif
 }
 
 do_ptr(argc,argv,symp)
@@ -270,12 +266,6 @@ pointer argv;
 	destr = (char *)p_spop() + STR_START;
 	strtype = NCAST p_spop();
 	checksvar( strtype, "Directory string" );
-#ifdef QNX
-	getcwd( dirbuf, 0 );
-	if( strlen(dirbuf) + 1 > get_stsize( strtype, destr ) )
-		run_error( ER(41,"stringbig`String too long") );
-	strcpy( destr, dirbuf );
-#else
 	seldnum = int_stop;
 	if( seldnum < 0 || seldnum > selDisk(getDisk()) ) {
 		tp_error( 1, 0 );
@@ -287,7 +277,6 @@ pointer argv;
 		run_error( ER(41,"stringbig`String too long") );
 	dlet = seldnum ? '@' + seldnum : 'A' + getDisk() ;
 	sprintf( destr, "%c:\\%s", dlet, dirbuf );
-#endif QNX
 	destr[-1] = strlen(destr);
 	do_undef( destr-1, U_SET, destr[-1] + 2 );
 }
@@ -528,58 +517,6 @@ pointer argv;
 	do_undef( dest, U_SET, sourcesize * compsize );
 
 }
-#ifdef QNX
-
-#include <io.h>
-#include "fsys.h"
-
-FILE *dirfile = 0;
-
-do_opendir( argc, argv )
-int argc;
-pointer *argv;
-{
-	if( dirfile )
-		fclose( dirfile );
-	if ((dirfile = fopen(str_spop()+STR_START, "r")) == NULL) {
-		error(ER(206,baddir));
-		}
-	if (fseek(dirfile, (long)sizeof(struct dir_xtnt), 0) < 0) {
-		fclose(dirfile);
-		dirfile = (FILE *)0;
-		error(ER(206,baddir));
-		}
-}
-
-do_readdir( argc, argv )
-int argc;
-pointer *argv;
-{
-	int charsRead;
-	char *fname;
-	rint *attarg;
-	struct dir_entry DE;
-
-	attarg = (rint *)p_spop();
-	while ((charsRead = fget(&DE, sizeof(DE), dirfile)) > 0) {
-		if (charsRead != sizeof(DE)) {
-			fclose(dirfile);
-			dirfile = (FILE *)0;
-			error(ER(206,baddir));
-			}
-		if (!DE.fstat)		/* empty slot in directory */
-			continue;
-		*attarg = DE.fattr;
-		do_undef( attarg, U_SET, sizeof(rint) );
-		str_ret_push( argv, DE.fname, strlen(DE.fname) );
-		return;
-		}
-	fclose( dirfile );
-	str_ret_push( argv, "", 0 );
-	dirfile = (FILE *)0;
-}
-
-#else
 do_opendir( argc, argv )
 int argc;
 pointer *argv;
@@ -607,7 +544,6 @@ pointer *argv;
 	 else
 		str_ret_push( argv, "", 0 );
 }
-#endif
 
 do_artostr(argc, argv)
 int argc;

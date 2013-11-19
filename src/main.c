@@ -78,14 +78,10 @@ extern int multi_monitor;
 int maccount = 0;		/* number of macros defined */
 int win_default;		/* default window flags */
 
-#ifdef QNX
-char *confname = "/config/ap.init";
-#else
-# ifdef msdos
+#ifdef msdos
 char *confname = "?:\\ap.ini";
-# else
+#else
 char *confname = "ap.init";
-# endif
 #endif
 char *origconf;
 
@@ -133,25 +129,6 @@ int main(int argc, char **argv)
 
 
 	/* before we do anything else, load the error messages */
-#ifdef QNX
-
-
-	if (argc == 0) {
-		fprintf(stderr, "Use: %s [file] [C=confile] [s=varstacksize] [f=checking freq]\n             [l=locstacksize] [m#=macrostring]* [c#=fontcode]* [-indent]\n", argv[0] );
-		exit(1);
-	}
-
-#ifdef Q201
-	if (argv[0][0] == '/' )
-		far_load( argv[0], 1 );
-	 else {
-		extern char tokentext[];
-		sprintf( tokentext, "/user_cmds/%s", argv[0] );
-		far_load( tokentext, 1 );
-		}
-#endif
-
-#endif
 
 	/*
 	 * Put aside a little extra memory in case we run out
@@ -167,12 +144,6 @@ int main(int argc, char **argv)
 		fprintf( stderr, "Error on startup of ALICE\n" );
 		exit(1);
 		}
-
-#ifdef QNX
-	/* Grow the segment */
-	GrowMem();
-#endif
-
 
 #ifdef ES 
 	esinit();
@@ -357,11 +328,6 @@ int main(int argc, char **argv)
 
 		minit_done = !(init_stat = aload(LOAD, LoadFile)) ;
 		}
-#ifdef QNX
-	/* flush input buffer */
-	while( getbc(TRUE) )
-		getbc(FALSE);
-#endif
 
     init_loop:
 #ifdef GEM
@@ -706,10 +672,8 @@ int mustmalloc;		/* argline stuff will go away */
 					sprintf(trace_name, "atr%d", getuid());
 				if (c != 'f')
 					dtrace = fopen(trace_name, "w");
-#ifndef qnx
 				if (c == 'u')
 					setbuf( dtrace, (pointer)NULL );
-#endif
 				break;
 #endif DEBUG
 			default:
@@ -743,14 +707,12 @@ int mustmalloc;		/* argline stuff will go away */
 				break;
 #endif
 #ifdef ECURSES
-#ifndef QNX
 			case 'f':
 				{
 				extern int does_flicker;
 				does_flicker = isplus;
 				}
 				break;
-#endif
 #endif
 
 #ifdef DEMO
@@ -788,34 +750,6 @@ int mustmalloc;		/* argline stuff will go away */
 	else
 		LoadFile = allocstring(argline);
 }
-
-#ifdef QNX
-
-unsigned malloc_total = 0;
-
-GrowMem()
-{
-	char *ptrs[45];
-	char *c;
-	int i;
-	int amount = 20000;
-
-	i = 0;
-	while( (amount > 10) && (i < 45) ) {
-		
-		while( (i < 45) && ((c = mmalloc(amount)) != NULL) ) {
-			malloc_total += amount;
-			ptrs[i++] = c;
-		}
-		amount /= 2;
-	}
-	i--;
-	while( i >= 0 ) {
-		dmfree( ptrs[i] );
-		i--;
-	}
-}
-#endif QNX
 
 #ifdef HERE
 gotHere(file, line)

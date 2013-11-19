@@ -113,9 +113,6 @@ rfloat *x;
 	*x = sqrt( x[-1] );
 }
 
-#ifdef QNX
-int	callNumber;
-#endif
 
 /*
  * Do a system call
@@ -125,14 +122,6 @@ int	argc;
 rint	*argv;		/* argv points to the top of the stack */
 {
 #ifndef ICRIPPLE
-#ifdef QNX
-	callNumber = argv[-1*P_S];	/* get system call number */
-	if (callNumber >= 128)
-		sys62(argv[-2*P_S], argv[-3*P_S], argv[-4*P_S], argv[-5*P_S], argv[-6*P_S], argv[-7*P_S], argv[-8*P_S], argv[-9*P_S], argv[-10*P_S]);
-	else
-		sys72(argv[-2*P_S], argv[-3*P_S], argv[-4*P_S], argv[-5*P_S], argv[-6*P_S], argv[-7*P_S], argv[-8*P_S], argv[-9*P_S], argv[-10*P_S]);
-	fflush(stdout);
-#else
 	funcptr ptr;
 
 #  ifdef HYBRID
@@ -142,7 +131,6 @@ rint	*argv;		/* argv points to the top of the stack */
 	ptr = ((funcptr *)argv)[-1];
 #  endif LARGE
 	(*ptr)(argc, argv, sp.st_generic);
-#endif qnx
 #else
 #endif ICRIPPLE
 }
@@ -152,21 +140,6 @@ int	argc;
 rint	*argv;		/* argv points to the top of the stack */
 {
 #ifndef ICRIPPLE
-#ifdef QNX
-	int	ret;
-
-	callNumber = argv[-1];	/* get system call number */
-	if (callNumber >= 128)
-		sys62(argv[-2*P_S], argv[-3*P_S], argv[-4*P_S], argv[-5*P_S], argv[-6*P_S], argv[-7*P_S], argv[-8*P_S], argv[-9*P_S], argv[-10*P_S]);
-	else
-		sys72(argv[-2*P_S], argv[-3*P_S], argv[-4*P_S], argv[-5*P_S], argv[-6*P_S], argv[-7*P_S], argv[-8*P_S], argv[-9*P_S], argv[-10*P_S]);
-
-	asm("mov -2[bp],ax");	/* ret <- result of sys. call */
-
-	*argv = ret;
-
-	fflush(stdout);
-#else
 	funcptr ptr;
 
 #ifdef HYBRID
@@ -176,14 +149,10 @@ rint	*argv;		/* argv points to the top of the stack */
 	ptr = ((funcptr)((pointer *)argv)[-1]);
 #endif
 	*argv = (*ptr)(argc, argv, sp.st_generic);
-#endif
 #else
 #endif ICRIPPLE
 }
 
-#ifdef QNX
-#include "systemCall.h"
-#endif
 
 do_peek( argc, argv )
 int argc;		/* how any args, already checked */
@@ -247,11 +216,6 @@ rint *xargv;
 # ifdef msdos
 			overror(2);	/* integer multiplication overflow*/
 # endif
-# ifdef QNX
-			extern char *OvflowCause;
-			OvflowCause = "square";
-			ovflow();
-# endif QNX
 #endif
 			}
 		*argv = num * num;
@@ -904,7 +868,7 @@ rint *argv;
 	long ctr;
 	int del = int_stop;
 
-#if defined(msdos) || defined( QNX )
+#ifdef msdos
 	tdelay( del / 10 );
 #else
 	for( ctr = 0; ctr < del * 100l; ctr++ )

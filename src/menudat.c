@@ -76,9 +76,6 @@ menu_nop, nop_command,
 "Special changes", "specialties",
 0};
 
-#ifdef QNX
-#define QNX_DISP 1
-#endif
 #ifdef ICON
 #define ICON_DISP 1
 #endif
@@ -90,12 +87,8 @@ menu_nop, nop_command,
 "Save", 0,
 "Save to Text File", Word2,
 "Merge (Load Library)", 0,
-#ifdef QNX_DISP
-"QNX command", "shell",
-#else
-# ifdef msdos
+#ifdef msdos
   "DOS command", "shell",
-# endif
 #endif
 #ifdef unix
 "Shell command", 0,

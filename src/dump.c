@@ -56,11 +56,7 @@ nodep xthenode;          /* current node being listed */
 	++indent;
 	do_indent();
 	if (is_a_stub(thenode)) {
-#ifdef QNX
-		fprintf(dtrace, "STUB at %x : %s\n", thenode,
-#else
 		fprintf(dtrace, "STUB at %lx : %s\n", (long)thenode,
-#endif QNX
 #ifdef PROC_INTERP
 			"Unknown"
 #else
@@ -76,43 +72,25 @@ nodep xthenode;          /* current node being listed */
 	nname = NodeName(ntype(thenode));
 #endif
 
-#ifdef QNX
-	fprintf(dtrace, "node=%x, type %d=%s: ",
-		thenode, ntype(thenode), nname ? nname : "Blank" );
-#else
 	fprintf(dtrace, "node=%lx, type %d=%s: ",
 		(long)thenode, ntype(thenode), nname ? nname : "Blank" );
-#endif QNX
 	if( ntype_info(ntype(thenode)) & F_SYMBOL )
 		sym_dump( sym_kid( thenode ) );
         kidnum = 0;
 
         if( is_a_list(thenode) ) {
 		int i;
-#ifdef QNX
-		fprintf(dtrace, "parent %x\n", tparent(thenode) );
-#else
 		fprintf(dtrace, "parent %lx\n", (long)tparent(thenode) );
-#endif QNX
 		for( i = 0; i < reg_kids( LCAST thenode ); i++ ) {
 			do_indent();
                         treedump( node_kid( thenode, i ) );
                 }
         } else {
-#ifdef QNX
-		fprintf(dtrace, "flags %x, parent %x, kids:",
-			node_flag(thenode), node_parent(thenode));
-#else
 		fprintf(dtrace, "flags %x, parent %lx, kids:",
 			node_flag(thenode), (long)node_parent(thenode));
-#endif QNX
 		nk = full_kids(ntype(thenode));
 		for (kidnum=0; kidnum<nk; kidnum++)
-#ifdef QNX
-			fprintf(dtrace, " #%d: %x,", kidnum, node_kid(thenode,kidnum));
-#else
 			fprintf(dtrace, " #%d: %lx,", kidnum, (long)node_kid(thenode,kidnum));
-#endif QNX
 		nk = reg_kids(thenode);
 		fprintf(dtrace, "\n");
 #ifndef Nodef
@@ -185,19 +163,11 @@ nodep table;
 	/* search all symbols in the block for the same pointer */
 	fprintf(dtrace, "\n");
 	while( ptr ) {
-#ifdef QNX
-		fprintf( dtrace, "%x(%s) - type %d typetree %x, scope %d, size %d, offset/value %d, flags %x\n",
-			ptr,
-			sym_name(ptr), sym_dtype(ptr), sym_type(ptr),
-			sym_scope(ptr), sym_size(ptr), sym_value(ptr),
-			sym_mflags(ptr));
-#else
 		fprintf( dtrace, "%lx(%s) - type %d typetree %lx, scope %d, size %d, offset/value %lx, flags %x\n",
 			(long)ptr,
 			sym_name(ptr), sym_dtype(ptr), (long)sym_type(ptr),
 			sym_scope(ptr), sym_size(ptr), (long)sym_value(ptr),
 			sym_mflags(ptr));
-#endif QNX
 		ptr = sym_next(ptr);
 		}
 }

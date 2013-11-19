@@ -706,9 +706,5 @@ do_allign( offset, objsize )
 int offset;
 int objsize;		/* how big object is */
 {
-#ifdef QNX		/* actually 8086 */
-	return offset;
-#else
 	return offset + (objsize > 1 ? (offset & 1) : 0);
-#endif
 }

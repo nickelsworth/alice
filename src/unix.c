@@ -187,18 +187,6 @@ _rchar()
 	else
 		return EOF;
 #endif /*unix*/
-#ifdef QNX
-# ifdef ICON
-	/* this loop eliminates the key released codes from the function
-	   keys */
-	do
-		c = getbc();
-	while( c >= 0xa0 && c <= 0xad );
-	return c;
-# else /* ibm qnx then */
-	return fgetc( stdin );
-# endif /*ICON*/
-#endif QNX
 #ifdef msdos
 	/* dos function call #7, MWC compiler syntax */
 	return dos(7<<8, 0, 0);

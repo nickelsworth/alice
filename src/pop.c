@@ -144,11 +144,9 @@ start_again:
 	printt1( "Wbase = %x\n", (int) wbase );
 
 	/* Grab the inner one */
-#ifndef QNX
 	if( hasmore )
 		w = newwin( nrow, ncol, firstlin+2, firstcol+1 );
 	 else
-#endif
 		w = subwin( wbase, nrow, ncol, firstlin+2, firstcol+1 );
 
 	if( w == (WINDOW *)ERR ) { 

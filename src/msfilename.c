@@ -23,11 +23,6 @@
 # define STATUS		(outreg.x.cflag & F_CF  ? outreg.h.al : 0)
 #endif msdos
 
-#ifdef QNX
-# include "io.h"
-# include <fsys.h>
-#endif QNX
-
 #ifdef UNIX
 # include <sys/types.h>
 # include <sys/dir.h>
@@ -178,12 +173,6 @@ int	filesInMenu;		/* display files in menu if necessary */
 			} else
 				strcpy(name, p);
 #endif msdos
-#ifdef QNX
-			if (p[0] == '+')			/* "+dir" */
-				changeDir(p+1);
-			else
-				strcpy(name, p);
-#endif QNX
 #ifdef UNIX
 			if (p[strlen(p)-1] == '/')		/* "dir/" */
 				changeDir(p);
@@ -266,61 +255,11 @@ int	filesInMenu;
 	printt0( "Done, ready to pop\n" );
 #endif msdos
 
-#if defined(QNX) || defined(UNIX)
+#ifdef UNIX
 	static	char	null_string[]	= { 0 };
 	static	char	baddir[]	= "baddir`Bad directory";
 	int	charsRead;
 #endif
-
-#ifdef QNX
-	struct dir_entry DE;
-	register FILE	*dp;
-	char	buf[NCPFN+1];
-	static char	title[80]	= "Files in ";
-
-	getcwd(&title[9], 0);
-	new_menu(mp, title);
-	add_menu_item(menu_nop);
-	add_menu_item("Enter a file name");
-	add_menu_item("+^");
-	/*
-	 * On QNX systems, a directory consists of an extent record,
-	 * followed by some number of directory entries.  Each
-	 * directory entry has various fields, including DE.fstat,
-	 * DE.fattr, and DE.fname.  By experimentation, if DE.fstat & 0x40
-	 * then the file exists, and is a directory if DE.fattr & _DIRECTORY.
-	 * The fname field can be as long as 16 chars and has a 17th byte
-	 * to NULL terminate it.  The current directory is obtained by
-	 * opening the file "".
-	 */
-	if ((dp = fopen(null_string, "r")) == NULL) {
-		warning(ER(206,baddir));
-		return;
-	}
-	if (fseek(dp, (long)sizeof(struct dir_xtnt), 0) < 0) {
-		warning(ER(206,baddir));
-		goto done;
-	}
-	while ((charsRead = fget(&DE, sizeof(DE), dp)) > 0) {
-		if (charsRead != sizeof(DE)) {
-			warning(ER(206,baddir));
-			goto done;
-		}
-		if (!DE.fstat)		/* empty slot in directory */
-			continue;
-		if ( DE.fattr & _DIRECTORY) {
-			strcpy(buf, "+");
-			strcat(buf, DE.fname);
-			add_menu_item(allocstring(buf));
-		} else if (filesInMenu) {
-			p = strrchr(DE.fname, '.');
-			if (p && (case_equal(FileExt, p+1)))
-				add_menu_item(allocstring(DE.fname));
-		}
-	}
-done:
-	fclose(dp);
-#endif QNX
 
 #ifdef UNIX
 	/* THIS SHOULD BE CHANGED TO WORK WITH THE opendir() ROUTINES */
@@ -531,9 +470,6 @@ char	*dir;
 	statret = intdosx( &inreg, &outreg, &segreg );
 	if (STATUS == EPATHNOTFOUND)
 #endif msdos
-#ifdef QNX
-	if (cd(dir))
-#endif QNX
 #ifdef UNIX
 	if (chdir(dir) < 0)
 #endif UNIX

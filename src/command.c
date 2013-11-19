@@ -153,10 +153,8 @@ char *args;
 	case CM_UTRACE:
 		dtrace = fopen( trace_name, "w" );
 		message(ER(196,"turning on unbuffered trace, file '%s'"), trace_name);
-#ifndef qnx
 		/* test microsoft thing */
 		setbuf(dtrace, (char *)0 );
-#endif
 		break;
 #endif
 	case CM_HIDE:
@@ -855,10 +853,8 @@ unsigned cmd;
 	char firstword[150];
 	register char *p, *q;
 
-#ifndef QNX
 	if( cmd_preproc && (*cmd_preproc)(cmd,tokentext) )
 			return;
-#endif
 	if (cmd == TOK_CMD || !cmd) {
 #ifdef DEBUG
 		if (tracing) fprintf(dtrace, "\nCommand: %s\n", tokentext);

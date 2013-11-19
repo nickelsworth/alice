@@ -319,11 +319,7 @@ efputc(a, f)
 char a;
 FILE *f;
 {
-#ifdef QNX
-	if( fput( &a, 1, f ) != 1 )
-#else
 	if (putc(a, f) == EOF)
-#endif
 		writeError(f);
 }
 #endif

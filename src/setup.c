@@ -35,17 +35,11 @@ int	line;
 #endif
 
 #ifndef HYBRID
-# ifdef QNX
-	extern unsigned malloc_total;
-	extern long MemUsed;
-# define malloc_left() (malloc_total-MemUsed)
-# else
 #  ifdef msdos
     extern long malloc_left();
 #  else
 #   define malloc_left() 1000000
 #  endif
-# endif
 #define malloc_divide 3
 #else
 extern long malloc_left();
@@ -53,28 +47,11 @@ extern long malloc_left();
 #endif
 
 extern char foref_str[];
-#ifdef QNX
-int
-num_handler()
-{
-	run_error( ER(314,"math`Floating point error (overflow)"));
-}
-#endif
 
 #ifndef PROC_INTERP
 init_interp()
 {
 	extern int count_suspend;
-#ifdef QNX
-	/* disable breaks we check them ourselves */
-
-	/* exception handler in first segment */
-#define EXC_FLOAT 0x80
-#define EXC_DIV_Z 0x8000
-	exc_handler( EXC_FLOAT | EXC_DIV_Z, 0, &num_handler );
-	/* disable breaks we check them ourselves */
-	unbreakable();
-#endif
 	curr_suspend = (struct susp_block *)NULL;
 	count_suspend = 0;
 	if( exec_stack )
@@ -591,17 +568,12 @@ pointer ptradr;		/* location for initializer storage, or zero */
 					rfloat rresult;
 					got_minus = FALSE;
 					cval = eval_const(inittree, TRUE);
-#ifdef QNX
-					esdsblk( &rresult, cval,
-						sizeof(rfloat), FALSE );
-#else
-# ifdef ES_TREE
+#ifdef ES_TREE
 					rresult = STAR((rfloat far *)
 						tfarptr(cval));
-# else
+#else
 					rresult = *(rfloat *)cval;
-# endif ES_TREE
-#endif QNX
+#endif ES_TREE
 					*(rfloat *)ptradr = got_minus ?
 					   -rresult : rresult;
 					do_undef(ptradr,U_SET,sizeof(rfloat));
@@ -725,13 +697,9 @@ int
 size_adjust( size )
 int size;
 {
-#ifdef QNX
-	return size > 1 ? size : 2;
-#else
-# ifdef POINT32
+#ifdef POINT32
 	return size < sizeof(pint) ? sizeof(pint) : (size+(size&1));
-# else
+#else
 	return size + (size & 1);
-# endif
 #endif
 }

@@ -27,9 +27,6 @@
 #include "dbflags.h"
 #include "break.h"
 
-#ifdef QNX
-char	*OvflowCause;		/* overflow cause */
-#endif
 
 #ifdef STUPID_COMPILER
 #define ISTAT 
@@ -363,13 +360,7 @@ for(;;) { /* THE FOREVER LOOP */
 			intadd();
 #else
 			temp1 = int_spop();
-#ifdef QNX
-			OvflowCause = "addition";
-#endif
 			int_stop += temp1;
-#ifdef QNX
-			asm("jo <overflow>");
-#endif
 #endif
 			}
 		else if (type_ptr == Basetype(BT_real)) {
@@ -395,13 +386,7 @@ for(;;) { /* THE FOREVER LOOP */
 			intsub();
 #else
 			temp1 = int_spop();
-#ifdef QNX
-			OvflowCause = "subtraction";
-#endif
 			int_stop -= temp1;
-#ifdef QNX
-			asm("jo <overflow>");
-#endif
 #endif
 		}
 		else if (type_ptr == Basetype(BT_real)) {
@@ -434,13 +419,7 @@ for(;;) { /* THE FOREVER LOOP */
 			intmult();
 #else
 			temp1 = int_spop();
-#ifdef QNX
-			OvflowCause = "multiplication";
-#endif
 			int_stop *= temp1;
-#ifdef QNX
-			asm("jo <overflow>");
-#endif
 #endif
 		}
 		else if (type_ptr == Basetype(BT_real)) {
@@ -535,18 +514,10 @@ for(;;) { /* THE FOREVER LOOP */
 						|| sym_size(thesym) <= 2 )
 					int_spush( sym_ivalue(thesym) );
 				else if( type_ptr == Basetype(BT_real) ) {
-#ifdef QNX 
-					/* a bug in ES float assignments causes
-					   this kludge */
-					f_spush( 0.0 );
-					esdsblk( &(f_stop), sym_value(thesym),
-						sizeof(rfloat), FALSE );
-#else
-# ifdef ES_TREE
+#ifdef ES_TREE
 					f_spush(STAR((rfloat far *)tfarptr(sym_value(thesym))) );
-# else
+#else
 					f_spush( *(rfloat *)sym_value(thesym));
-# endif
 #endif
 					if( sym_mflags(thesym) & SF_NEGREAL )
 						f_stop = - f_stop;
@@ -704,17 +675,6 @@ for(;;) { /* THE FOREVER LOOP */
 	} /* end of the forever while loop */
 }
 
-#ifdef QNX
-/*
- * The <overflow> label is jumped to directly from inside the interpreter.
- * This will probably break continue...so this should be changed somehow.
- */
-ovflow()
-{
-	asm("<overflow>:");
-	run_error(ER(63,"intovflow`integer %s overflow"), OvflowCause);
-}
-#endif
 
 #ifdef IOP_FUNCS
 

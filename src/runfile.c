@@ -31,14 +31,7 @@ fileptr predef_files[] = {
 &fil_input, &fil_output, &fil_kbd, &fil_lst, &fil_aux, &fil_con,
 		&fil_trm, &fil_inp, &fil_out, &fil_err };
 
-#ifdef QNX
-FILE ** predf_streams[] = {
-	&stdin, &stdout, &stdin,
-	&stdout, &stdout,
-	&stdout, &stdout, &stdin, &stdout, &stderr };
-#else
 FILE * predf_streams[10];
-#endif
 
 void
 init_predef()
@@ -152,7 +145,7 @@ char *str;			/* string or nothing */
 }
 
 /* number of digits in exponent */
-#if defined(msdos) || defined(QNX)
+#if defined(msdos)
 #define EXPDIGITS 3
 #else
 #define EXPDIGITS 2
@@ -601,14 +594,10 @@ rint *argv;
 
 tst_charwait()
 {
-#ifdef QNX
-	return getbc(TRUE) > 0;
-#else
 #ifdef msdos
 	return dos_chr_waits();
 #else
 	return 1;	/* always waiting */
-#endif
 #endif
 }
 
@@ -632,16 +621,12 @@ rint *argv;
 	}
 #else
 
-#ifdef QNX
-	*argv = getbc(FALSE);
-#else
 	if( !tst_charwait() ) {
 		curOn( pg_out );
 		wrefresh( pg_out );
 		}
 	*argv = keyget();
 	curOff( pg_out );
-#endif
 #endif SAI
 }
 
@@ -655,14 +640,6 @@ pointer lowbound, upbound;	/* bounds to close within */
 	int i;
 	register fileptr thefile;
 
-#ifdef QNX
-	extern FILE *dirfile;
-
-	if( allofthem && dirfile ) {
-		fclose( dirfile );
-		dirfile = (FILE *)0;
-		}
-#endif
 
 #ifdef Trace
 	/* disable tracing for removed memory */
@@ -814,11 +791,7 @@ fileptr *argv;
 	register fileptr whfile;
 
 	whfile = file_setup( argc, argv, FIL_RANDOM|FIL_READ|FIL_WRITE,
-#ifdef QNX
-			"rw", "Update" );
-#else
 			"r+", "Update" );
-#endif
 	/* now do the manditory get on the file */
 	if( !last_ioerr )
 		if( turbo_io )
@@ -955,19 +928,11 @@ int style;		/* true for text file, false otherwise */
 		}
 		
 	 else
-#ifdef QNX
-		if( fput( where, whfile->f_size, whfile->desc.f_stream )
-					!= whfile->f_size ) {
-			tp_error( 0xf0, 0 );
-			run_error(ER(276, writErr));
-			}
-#else
 		for( i = 0; i < whfile->f_size; i++ )
 			if (fputc( where[i], whfile->desc.f_stream ) == EOF) {
 				tp_error( 0xf0, 0 );
 				run_error(ER(276, writErr));
 				}
-#endif QNX
 }
 fileout( filedesc, string )
 fileptr filedesc;
@@ -1066,7 +1031,7 @@ rint *argv;
 #endif
 			break;
 		case 8:
-#if defined(msdos) || defined(QNX)
+#ifdef msdos
 			{
 			extern int mon_is_colour;
 			rv = mon_is_colour;

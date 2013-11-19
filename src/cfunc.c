@@ -97,22 +97,6 @@ unsigned off,seg,ar1,ar2,ar3,ar4,ar5,ar6,ar7,ar8,ar9;
 }
 #endif msdos
 
-#ifdef QNX
-long
-size_of_file( stream )
-FILE *stream;
-{
-	/* how do we do this in qnx? */
-	long old;
-	long end, ftell();
-
-	old = ftell( stream );
-	fseek( stream, 0L, 2 );
-	end = ftell( stream );
-	fseek( stream, old, 0 );
-	return end;
-}
-#endif QNX
 
 static longop( lfunc, l1, l2, res )
 int lfunc;	
@@ -174,20 +158,11 @@ macroize(),
 macpush();
 
 
-#ifdef QNX
-extern pint fprintf(), ftell();
-extern int screen_seg;
-#endif
 
 extern pint fseek(), fflush();
 extern int rand();
 
-#ifdef QNX
-extern pint getc(), get_date();
-#define fgetc getc
-#else
 extern pint fgetc() /*, time() */;
-#endif
 
 extern pint 
 waddch(),
@@ -234,22 +209,6 @@ system();
 # endif msdos
 #endif Microsoft && msdos
 
-#ifdef QNX
-extern pint pnewwin(),
-shell(),
-atoh(),
-cd(),
-attach(),
-detach(),
-create(),
-get_date(),
-io_in(),
-io_out(),
-send(),
-receive(),
-reply(),
-get_ticks();
-#endif QNX
 
 #ifdef unix
 extern pint fork();
@@ -331,11 +290,7 @@ wclrtoeol,		/* 50 */
 (ptrfunc)subwin,	/* 51 */
 wclrtobot,		/* 52 */
 af_touchwin,		/* 53 */
-#ifdef QNX
-(ptrfunc)get_date,	/* 54 */
-#else
 af_time,
-#endif QNX
 (ptrfunc)rand,		/* 55 */
 (ptrfunc)ftell,		/* 56 */
 (ptrfunc)fillchar,	/* 57 */
@@ -385,21 +340,6 @@ unlink,			/* 2 */
 system,			/* 2 */
 # endif
 #endif
-#ifdef QNX
-shell,			/* 2 */
-atoh,			/* 2 */
-cd,			/* 2 */
-attach,			/* 2 */
-detach,			/* 2 */
-create,			/* 2 */
-get_date,		/* 2 */
-io_in,			/* 2 */
-io_out,			/* 2 */
-send,			/* 2 */
-receive,		/* 2 */
-reply,			/* 2 */
-get_ticks,		/* 2 */
-#endif
 /* room to patch the binary!!! */
 (ptrfunc)0,
 (ptrfunc)0,
@@ -422,15 +362,6 @@ static rint what_computer = 1;
 static rint has_segments = TRUE;
 # else
 static rint has_segments = FALSE;
-# endif
-#endif
-#ifdef QNX
-# ifdef ICON
-   static rint what_computer = 2;
-   static rint has_segments = FALSE;
-# else
-   static rint what_computer = 4;
-   static rint has_segments = FALSE;
 # endif
 #endif
 #ifdef unix
@@ -468,13 +399,8 @@ Tinyp((pointer)&step_flag),	/* 6 */
 Tinyp((pointer)&step_delay),	/* 7 */
 (pointer)&what_computer,	/* 8 */
 Tinyp((pointer)&CheckSpeed),	/* 9 */
-#ifdef QNX
-(pointer)&stdin,		/* 10 */
-(pointer)&stdout, 		/* 11 */
-#else
 0 /*(pointer)stdin*/,			/* 10 */
 0 /*(pointer)stdout*/,		/* 11 */
-#endif
 (pointer)ALICE_VERSION,		/* 12 */
 (pointer)&stdscr,		/* 13 */
 Tinyp((pointer)&keymacros),	/* 14 */
@@ -504,11 +430,7 @@ Tinyp((pointer)&cmd_preproc),	/* 26 */
 #endif
 (pointer)&ex_stack,	/* 30 */
 (pointer)&does_flicker,	/* 31 */
-#ifdef QNX
-(pointer)&screen_seg,	/* 32 */
-#else
 (pointer)&screen_mem_addr,/* 32 */
-#endif
 (pointer)&mono_adapter,	/* 34 */
 (pointer)&free_top,	/* 35 */
 #ifdef TURBO

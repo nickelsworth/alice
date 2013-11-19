@@ -182,10 +182,6 @@ int stopline;			/* physical line to stop */
 	int line_no;			/* for looping through lines */
 	extern int column_base;		/* for when treeprint line folds */
 	struct scr_line *ole_line;
-#ifdef QNX
-	int ndone_kludge = TRUE;	/* do the treeprint, goto doesn't
-					   work properly under Quantum */
-#endif
 
 	if( code != OLEOUT ) lb_cursor = line_buffer;	/* start of line */
 	column_base = 0;
@@ -213,11 +209,7 @@ int stopline;			/* physical line to stop */
 				bufadd( " forward;" );
 				*lb_cursor = 0;
 				or_sym_mflags( routname, SF_ISFORWARD);
-#ifdef QNX
-				ndone_kludge = FALSE;
-#else
 				goto line_done; /* do not treeprint exception */
-#endif
 				}
 			}
 	  	else if( ntype(outnode) == N_HIDE && bp_index < MAX_BACKPATCH ){
@@ -249,9 +241,6 @@ int stopline;			/* physical line to stop */
 		line->pcode = 0;	/* stubs only one line */
 		}
 	 else {
-#ifdef QNX
-		if( ndone_kludge )
-#endif
 		treeprint( outnode, line->pcode, ' ', (char *)NULL, LNIL );
 		}
 

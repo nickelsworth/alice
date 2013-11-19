@@ -246,11 +246,7 @@ static rout_node r_ln = { 0, do_ln, 1, 1, l_real_param };
 static rout_node r_exp = { 0, do_exp, 1, 1, l_real_param };
 static rout_node r_sqrt = { 0, do_sqrt, 1, 1, l_real_param };
 
-#ifdef QNX
-static bargs l_sysproc[] = {NULL, IBC &un_int_param, "\200Routine", NULL };
-#else
 static bargs l_sysproc[] = {NULL, IBC &un_valptr_param, "\200Routine", NULL };
-#endif
 
 static rout_node r_sysproc = {0, do_sysproc, 1, 10, l_sysproc};
 static rout_node r_sysfunc = {0, do_sysfunc, 1, 10, l_sysproc};

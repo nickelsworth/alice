@@ -23,11 +23,6 @@
 #endif
 #include "dbflags.h"
 
-#ifdef QNX
-static char	*OvflowCause;		/* overflow cause */
-extern unsigned Exc_pending, Exc_bits;
-
-#endif
 
 extern struct pas_file fil_input, fil_output;
 extern int call_depth;

@@ -24,11 +24,6 @@
 # define strrchr rindex
 #endif msdos
 
-#ifdef QNX
-# include "io.h"
-# include <fsys.h>
-#endif QNX
-
 #ifdef unix
 # include <sys/types.h>
 # include <sys/dir.h>

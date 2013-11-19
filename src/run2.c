@@ -893,14 +893,9 @@ int	EOFChar = KEY_F(6);
 #define MAGIC_SPLAT 0x8a	/* upside-down '?' */
 #else
 
-#ifdef QNX
-#define MAGIC_SPLAT 0x0f
-extern int	EOFChar;	/* defined and set in curses */
-#else
 
 #define MAGIC_SPLAT '?'
 int	EOFChar = CNTL('D');
-#endif QNX
 #endif msdos
 
 /* NEEDS WINDOW ARGUMENT replace pg_out */

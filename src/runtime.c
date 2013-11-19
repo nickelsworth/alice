@@ -99,11 +99,7 @@ int do_estack;		/* flag indicating what is to be done with ex_stack */
 {
 	extern struct pas_file fil_input, fil_output, fil_kbd;
 	extern fileptr predef_files[];
-#ifdef QNX
 	extern FILE *predf_streams[];		/* streams for files */
-#else
-	extern FILE *predf_streams[];		/* streams for files */
-#endif
 	extern unsigned int predf_flags[];	/* flags for files */
 	extern int predef_number;	/* number of predefined files */
 	extern int call_depth;
@@ -157,11 +153,7 @@ int do_estack;		/* flag indicating what is to be done with ex_stack */
 		ftinit = predef_files[i];
 		ftinit->f_name = 0;
 		ftinit->f_size = sizeof(char);
-#ifdef QNX
-		ftinit->desc.f_stream = *predf_streams[i];
-#else
 		ftinit->desc.f_stream = predf_streams[i];
-#endif
 		ftinit->f_flags = predf_flags[i];
 		}
 		
@@ -973,8 +965,6 @@ char *str1, *str2;
 	return strcmp( str1, str2 );
 }
 
-#ifndef QNX
-
 zero( loc, bytes )
 pointer loc;
 int bytes;
@@ -1003,18 +993,6 @@ int bytes;
 		*loc++ = fillbyte;
 }
 # endif
-
-#else QNX
-fillchar( loc, fillbyte, bytes )
-pointer loc;
-register char fillbyte;
-unsigned int bytes;
-{
-	while( bytes-- )
-		*loc++ = fillbyte;
-}
-
-#endif
 
 
 #ifndef FixedTheAssemblerVersionYet

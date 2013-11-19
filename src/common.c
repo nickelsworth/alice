@@ -111,7 +111,6 @@ reg int bytes;		/* how many to move */
 #endif msdos
 }
 
-#ifndef QNX
 
 max(x, y)
 int	x;
@@ -131,14 +130,7 @@ int	y;
 	else
 		return y;
 }
-#endif
 
-#ifdef QNX
-strncpy(dest, src, num)
-{
-	copy( dest, src, num );
-}
-#endif QNX
 
 jmp_buf exit_buf;
 jmp_buf err_buf;
@@ -193,11 +185,6 @@ clean_curws()
 #include <spawn.h>
 #endif
 
-#ifdef QNX
-#define QNX_CLS		'\014'		/* CLEAR SCREEN		  */
-#define QNX_APR		'\015'		/* ACTIVE POSITION RETURN */
-#define QNX_APD		'\012'		/* ACTIVE POSITION DOWN   */
-#endif
 
 safeshell( str, pause, exec )
 char *str;
@@ -207,23 +194,6 @@ int exec;		/* do a spawn type call */
 #ifndef SAI
 	int ret;
 	regtty( TRUE, FALSE );
-#ifdef QNX
-	fputc( QNX_CLS, stderr );
-	if( !*str ) {
-		extern char My_priority;
-
-		fputs(
-       getERRstr( ER(16,"QNX Shell (Press CTRL-D to return to ALICE BASIC)")),
-		     stderr );
-		fputc( QNX_APD, stderr );
-		fputc( QNX_APR, stderr );
-
-		/* 0x04 is BEQUEATH_TTY */
-		ret = create(0, 0x04, My_priority, 0, 0, "/cmds/sh", 0);
-		}
-	else
-		ret = shell( str );
-#else
 # ifdef msdos
 	if( exec ) {
 		char *argloc;
@@ -234,7 +204,6 @@ int exec;		/* do a spawn type call */
 	 else
 # endif
 	ret = system( str );
-#endif
 	printt2( "Called system with str %s, got return %d\n", str, ret );
 	regtty( FALSE, pause );
 	return ret;
@@ -344,22 +313,6 @@ nodep block;
 	/* beep to indicate done */
 }
 
-#ifdef QNX
-efputc(c, fp)
-int	c;
-FILE	*fp;
-{
-	/* QNX putc returns the character written */
-	putc(c, fp);
-}
-
-int
-fgetc(fp)
-FILE	*fp;
-{
-	return getc(fp);
-}
-#else
 efputc(c, fp)
 int	c;
 FILE	*fp;
@@ -370,7 +323,6 @@ FILE	*fp;
 #endif
 			writeError(fp);
 }
-#endif
 
 writeError(fp)
 FILE	*fp;

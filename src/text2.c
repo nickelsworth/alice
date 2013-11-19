@@ -20,9 +20,6 @@
 #include "flags.h"
 #include "jump.h"
 #include "keys.h"
-#ifndef QNX
-# include "ctype.h"
-#endif
 #ifndef A_CHARTEXT
 #define A_CHARTEXT 0x7f
 #endif

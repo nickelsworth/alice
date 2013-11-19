@@ -381,33 +381,6 @@ reg int size;	/* how long are the entries */
 	return (bits8 *)NULL;
 }
 
-#ifdef QNX
-int
-strncmp(_s1, _s2, n)
-char	*_s1;
-char	*_s2;
-int n;
-{
-	register char   *s1 = _s1;
-	register char   *s2 = _s2;
-	register int	i;
-
-	for (i = 0; i < n; i++, s1++, s2++)
-		if (*s1 < *s2)
-			return -1;
-		else if (*s1 > *s2)
-			return 1;
-		else if (*s1 == '\0')
-			return 0;
-	return 0;
-}
-
-getuid()
-{
-	return 1;
-}
-
-#endif QNX
 
 statusLine()
 {

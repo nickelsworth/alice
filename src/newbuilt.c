@@ -80,13 +80,8 @@ ss ndCrtExi = {N_DECL_ID, RD(r_boring), NLF, NNC("CrtExit"), T_BPROC, HashByte,
 	&ndm4, Basetype(SP_proc), 0, 0, 0, Lmf, -210 };
 ss ndCrtIni = {N_DECL_ID, RD(r_boring), NLF, NNC("CrtInit"), T_BPROC, HashByte,
 	&ndCrtExi, Basetype(SP_proc), 0, 0, 0, Lmf, -211 };
-#ifdef QNX
-# define ODARG "\200Directory"
-# define ODARGC 1
-#else
-# define ODARG "\200Directory Pattern"
-# define ODARGC 2
-#endif
+#define ODARG "\200Directory Pattern"
+#define ODARGC 2
 static bargs l_opd_param[] = { NULL, IBC &un_str_param, ODARG,
 			IBC &un_int_param, "\200Attribute", NULL };
 static bargs l_readd_param[] = { NULL, IBC &un_vint_param,"\200Attribute",NULL};
@@ -182,14 +177,10 @@ ss ndMkDir = {N_DECL_ID, RD(r_dirfunc), NLF, NNC("MkDir"), T_BPROC, HashByte,
 ss ndRmDir = {N_DECL_ID, RD(r_dirfunc), NLF, NNC("RmDir"), T_BPROC, HashByte,
 	&ndMkDir, Basetype(SP_proc), 0, 0, 0, Lmf, -174 };
 
-#ifdef QNX
-static bargs l_getdir[] = { NULL, IBC &un_str_param, NULL, NULL };
-static rout_node r_getdir = { 0, do_getdir, 1, 1, l_getdir };
-#else
 static bargs l_getdir[] = { NULL, IBC &un_int_param, "\200Drive Number",
 			IBC &un_str_param, NULL, NULL };
 static rout_node r_getdir = { 0, do_getdir, 2, 2, l_getdir };
-#endif
+
 ss ndGetDir = {N_DECL_ID, RD(r_getdir), NLF, NNC("GetDir"), T_BTPROC, HashByte,
 	&ndRmDir, Basetype(SP_proc), 0, 0, 0, Lmf, -175 };
 static rout_node r_mrkrel = { 0, do_markrel, 1, 1, l_pointer };

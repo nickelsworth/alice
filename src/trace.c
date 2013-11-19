@@ -316,7 +316,6 @@ char *fname;
 }
 #else
 
-# ifndef QNX
 unsigned
 tlload( fname )
 char *fname;
@@ -326,7 +325,6 @@ char *fname;
 	clret = comload( fname );
 	return (unsigned int) *clret;
 }
-# endif qnx
 #endif  large & msdos
 
 #ifdef LARGE

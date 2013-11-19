@@ -13,7 +13,7 @@
 13	/badsellist`This command can't be applied to a list
 14	/needrange`You must select an item or range first - see SELECT command
 15	/needlist`Selected item must be an element in a list
-16	QNX Shell - press CTRL-D to return to ALICE
+16	press CTRL-D to return to ALICE
 17	#unfinished`We haven't imlemented %s yet
 18	>transmogrify attempted on %d node
 19	#Cannot open template file
