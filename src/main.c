@@ -8,6 +8,7 @@
 #include "alice.h"
 #include <curses.h>
 #include <string.h>
+#include <stdlib.h>
 #include "workspace.h"
 #include "window.h"
 #include "jump.h"
@@ -116,8 +117,7 @@ char	*LoadFile	= 0;
 
 static center( int line, char *string );
 
-main(argc, argv)
-char **argv;
+int main(int argc, char **argv)
 {
 	int	init_stat = TRUE;
 	extern unsigned int getFreeParas();

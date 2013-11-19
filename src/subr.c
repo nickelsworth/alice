@@ -159,7 +159,7 @@ char *msg;
 	WINDOW *win = curWindows[ERRWIN];
 
 	if (msg == NULL)
-		return;	/* bullet proof */
+		return NULL;	/* bullet proof */
 #ifdef DEBUG
 	if (tracing) {
 		fprintf(dtrace, "Error: ");

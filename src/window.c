@@ -61,7 +61,7 @@ prep_r_window()
 	WINDOW *newerr, *newedit, *newout, *newcmd;
 
 	if( work_debug(curr_workspace) & DBF_ON )
-		return;		/* already set up */
+		return 0;		/* already set up */
 #ifdef Notdef
 	/* This code is for a fancier windowing system with an output
 	   window always present */
@@ -265,7 +265,7 @@ show_whole_doda()
 	extern int error_present;
 
 	if( cantredraw )
-		return;
+		return 0;
 	statusLine();
 	if( error_present > 0 )
 		repeat_err();

@@ -49,7 +49,7 @@ bscan()
 {
 	register int c;
 	register char *cp;
-	static int look_kw(reg char * str);
+	int look_kw(reg char * str);
 
 	int f;
 	char delim;
@@ -464,7 +464,7 @@ int tnum;
 }
 	
 /* Look up a keyword in the table above, returning the token number or 0 */
-static int
+int
 look_kw(str)
 reg char *str;
 {

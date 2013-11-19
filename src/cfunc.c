@@ -137,13 +137,13 @@ long *res;
 		*(rfloat *)res = (rfloat) *res;
 }
 
-extern int fprintf(), dos_blk(), fclose();
+//extern int fprintf(), dos_blk(), fclose();
 
 typedef pint (*ptrfunc)();
 
 extern pint
 atoi(),
-sprintf(),
+//sprintf(),
 new_menu(),
 add_menu_item(),
 pop_menu(),
@@ -160,9 +160,9 @@ exp_list(),
 del_list(),
 change_ntype();
 
-#ifdef notdef /* SAI */
-extern pint fprintf();
-#endif
+//#ifdef notdef /* SAI */
+//extern pint fprintf();
+//#endif
 
 extern pint
 fresh_stub(),

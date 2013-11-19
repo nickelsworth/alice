@@ -43,7 +43,7 @@ int redo;		/* flag to say if we should redo */
 {
 	register alice_window *win;	/* window being checked */
 	register unsigned int lno;		/* line number in scan */
-	bits8 changeflag;	
+	bits8 changeflag;
 	bits8 qcflag;			/* quick change flag store */
 	struct scr_line thisline;	/* storage for local line */
 	register nodep starthere;	/* where we start redisplay */
@@ -74,14 +74,14 @@ int redo;		/* flag to say if we should redo */
 #ifdef msdos
 		msdoscursor( FALSE );	/* turn off blink cursor */
 #endif
-		starthere = win->start_cursor;	
+		starthere = win->start_cursor;
 		startpc = win->start_pcode;
 		disp_lines( win, 0, 0, starthere, startpc, win->start_sline );
 		win->big_change = FALSE;
 		/* should be a break but for now it is a.... */
 		goto donewindow;
-		}
-		 
+	}
+
 	for( lno = 0; lno < win->w_height; lno++ ) {
 		scrl_copy( thisline, win->w_lines[lno] );
 		if( thisline.listptr == NIL )
@@ -93,9 +93,9 @@ int redo;		/* flag to say if we should redo */
 			if(tracing) fprintf(dtrace,"Display down from line %d\n", lno );
 #endif
 			disp_lines( win, lno, 0, line_headnode( thisline ),
-				thisline.pcode, thisline.sub_line );
+			            thisline.pcode, thisline.sub_line );
 			break;
-			}
+		}
 		/*qcflag = changeflag & (LINE_INVERT | LINE_OFF ); */
 		if( changeflag & SMALL_CHANGE /* ||
 				(qcflag && qcflag !=(LINE_INVERT|LINE_OFF))*/) {
@@ -104,13 +104,14 @@ int redo;		/* flag to say if we should redo */
 #endif
 			cur_line = lno;
 			out_line( &thisline, win, FALSE, win->w_height );
-			}
+		}
 		/* if both the on and off bits were set we didn't redraw the
 		   line so we must be sure to clear the change bits as though
 		   we did call outline */
 		win->w_lines[lno].sc_change = 0;
-		}
-	donewindow: ;
+	}
+donewindow:
+	;
 
 }
 
@@ -132,11 +133,11 @@ int important;			/* is the new line a must */
 
 	/* should loop through all active edit windows to find lines
 	 * that the change is made on and tag them.  for now just
-	 * do the main window 
+	 * do the main window
 	 */
-	if( !mark_line( guy_on_screen, 
-			size_in_lines(whatsnew)==size_in_lines(whatsold) ?
-			SMALL_CHANGE : BIG_CHANGE ) && important )
+	if( !mark_line( guy_on_screen,
+	                size_in_lines(whatsnew)==size_in_lines(whatsold) ?
+	                SMALL_CHANGE : BIG_CHANGE ) && important )
 		mark_line( NIL, HUGE_CHANGE );
 
 }
@@ -159,8 +160,7 @@ int thechange;
 
 	if( thechange == HUGE_CHANGE ) {
 		win->big_change = TRUE;
-		}
-	 else {
+	} else {
 		/*if( thechange >= LINE_INVERT ) {
 			changeline = find_line_number(win, anode, (int *)NULL,
 					&lastline );
@@ -169,20 +169,20 @@ int thechange;
 			}
 		 else */ {
 			if( (lastline = changeline =
-				find_line_number(win, anode, (int *)NULL, (int *)NULL )) < 0 )
+			                    find_line_number(win, anode, (int *)NULL, (int *)NULL )) < 0 )
 				/* if looping, change this around */
 				return FALSE;
 
-			}
+		}
 #ifdef DB_DISPLAY
 		if(tracing)fprintf(dtrace,"Marking Lines from %d to %d with %d\n",
-			changeline, lastline, thechange );
+			                   changeline, lastline, thechange );
 #endif
 
 		for( countline = changeline; countline <= lastline;
-					countline++ )
+		     countline++ )
 			win->w_lines[countline].sc_change |= thechange;
-		}
+	}
 	return TRUE;
 }
 
@@ -215,7 +215,8 @@ curspos newtop;		/* new top to use if deleted */
 	}
 }
 
-page_up(){
+page_up()
+{
 	struct scr_line line;
 	extern Boolean anywflag;
 	int i;
@@ -230,10 +231,10 @@ page_up(){
 			set_wscur( curr_window, cursor = cur_work_top );
 			display(TRUE);
 			return;
-			}
+		}
 		line.sub_line = 0;	/* always line 0 */
 		pcod_adjust( &line );
-		}
+	}
 	set_sc_fline( curr_window, &line );
 	cursor = curr_window->start_cursor;
 	/* allow the cursor to find on any printcode */
@@ -241,8 +242,8 @@ page_up(){
 	display(TRUE);
 	return;
 }
-		
-		
+
+
 
 page_down()
 {
@@ -259,7 +260,7 @@ page_down()
 		/* allow the cursor to find on any printcode */
 		anywflag = TRUE;
 		win->big_change = TRUE;
-		}
+	}
 }
 
 
@@ -282,14 +283,14 @@ nodep xanode;		/* node to get the size of */
 	if( is_a_stub( anode ) )
 		/* following query is actually not necessary */
 		return( is_line_class( int_kid(0,anode) ) ? 1 : 0 );
-	 else
+	else
 		/* if it is a line and more than one print code, return 2 */
 		if( print_codes(ntype(anode))[1] || ntype_info(ntype(anode))
-						& F_PMULTI )
+		    & F_PMULTI )
 			return 2;
-		 else
+		else
 			return (ntype_info( ntype(anode) ) & F_LINE ) ? 1 : 0;
-		
+
 }
 
 int sought_column;		/* column treeprint looks for */
@@ -327,7 +328,7 @@ int *fullrange;		/* get the whole range for the line */
 
 	if( kid_index < 0 && rpc_index )
 		pc_index = (-1);
-	 else
+	else
 		pc_index = kcget( kid_index, ncurs );
 #ifdef DB_DISPLAY
 	if(tracing)fprintf(dtrace, "Line level cursor %x from print code %d\n", (int)PCP( ncurs ), pc_index );
@@ -339,9 +340,9 @@ int *fullrange;		/* get the whole range for the line */
 	for( lno = 0; lno < win->w_height; lno++ ) {
 		int lpcode;
 		printt4("lno=%d, listptr=%x, listindex=%d, pcode=%d\n", lno,
-			(int)win->w_lines[lno].listptr,
-			(int)win->w_lines[lno].listindex,
-			win->w_lines[lno].pcode );
+		        (int)win->w_lines[lno].listptr,
+		        (int)win->w_lines[lno].listindex,
+		        win->w_lines[lno].pcode );
 		if (win->w_lines[lno].listptr &&
 		    ncurs == line_headnode(win->w_lines[lno]) &&
 		    ((lpcode = win->w_lines[lno].pcode) == pc_index ||
@@ -350,9 +351,9 @@ int *fullrange;		/* get the whole range for the line */
 			if( rpc_index )
 				*rpc_index = pc_index < 0 ? lpcode : 0 ;
 			realline = lno;
-			break;	
-			}
+			break;
 		}
+	}
 	lno = realline;
 	if( fullrange ) {
 #ifdef LOADABLE_TEMPLATES
@@ -362,7 +363,7 @@ int *fullrange;		/* get the whole range for the line */
 #endif
 		nodep ngtcheck;
 		if( ntype_info(ntype(curs)) & F_PMULTI &&
-				(ngtcheck = look_multi(curs)) ) 
+		    (ngtcheck = look_multi(curs)) )
 			curs = ngtcheck;
 		if( nvec = kid_codes(ntype(curs)) ) {
 			kcvec = nvec;
@@ -371,18 +372,17 @@ int *fullrange;		/* get the whole range for the line */
 			while( ++lno < win->w_height ) {
 				/* if on the line and on last pcode */
 				if( ncurs == line_headnode(win->w_lines[lno]) &&
-					print_codes(ntype(ncurs))[
-						win->w_lines[lno].pcode+1]== 0)
+				    print_codes(ntype(ncurs))[
+				        win->w_lines[lno].pcode+1]== 0)
 					*fullrange = lno;
-				}
 			}
-		 else {
+		} else {
 			*fullrange = realline;
 #ifdef DB_DISPLAY
 			if(tracing)fprintf(dtrace,"Setting fullrange to line number %d due to kcvec=0\n", lno );
 #endif
-			}
 		}
+	}
 	return realline;
 }
 
@@ -407,7 +407,7 @@ int scr_width;		/* how wide the screen */
 
 curspos pointed_node;		/* what we were pointing at */
 int point_offset;		/* offset into what we pointed at */
-	
+
 
 curspos
 find_alice_cursor(xwin, row, column )
@@ -435,7 +435,7 @@ int column;
 		row--;
 	if( row < 0 )
 		bug( ER(249,"find_alice_cursor : Screen has no lines on it!!!") );
-	
+
 	scrl_copy( ourline , win->w_lines[row] );
 
 	main_indent = calc_main_indent( ourline.ind_level, win->w_width );
@@ -445,13 +445,13 @@ int column;
 	if( sought_column < 0 )
 		if( sought_column > -3 )
 			sought_column = 0;
-		 else {
+		else {
 			/* it is far to the left.  take the whole line */
 			return( line_headnode( ourline ) );
-			}
-	if( ourline.sub_line != 0 )	
+		}
+	if( ourline.sub_line != 0 )
 		sought_column += width - main_indent
-			+ (width - indent) * (ourline.sub_line - 1);
+		                 + (width - indent) * (ourline.sub_line - 1);
 
 	/* we now know which column we seek.  now print the line in a
 	   buffer to work out what node this really is */
@@ -485,9 +485,10 @@ int column;
 
 /* see treeprint for a little about this routine.  The external former_node
  * is set by treeprint whenever it prints a node in LOOK_COLUMN mode
- */ 
+ */
 
-found_column() {
+found_column()
+{
 
 	/* OH BOY.  We are past the node
 	   at the requested column */
@@ -495,8 +496,8 @@ found_column() {
 	point_offset = sought_column - form_column;
 #ifdef DB_DISPLAY
 	if(tracing)fprintf(dtrace,
-		"At column %d found node %x offset %d\n",
-		form_column, pointed_node, point_offset );
+		                   "At column %d found node %x offset %d\n",
+		                   form_column, pointed_node, point_offset );
 #endif
 	reset();
 }
@@ -512,7 +513,7 @@ found_column() {
  * It returns the node it found
  */
 
-nodep 
+nodep
 look_multi(xanode )
 nodep xanode;		/* subtree we look at */
 {
@@ -552,47 +553,47 @@ int redisp;	/* should display be called */
 			ssel_last = sel_last;
 			bld_range( cursor, anchor );
 			if( sel_node != savsnode || sel_first != ssel_first ||
-					sel_last != ssel_last ) {
+			    sel_last != ssel_last ) {
 				bld_range( oldcur, anchor );
 				vid_alter(FALSE, 0);
 				bld_range( cursor, anchor );
 				vid_alter(TRUE, 1);
-				}
+			}
 			if( redisp )
 				display(FALSE);
-			}
-		oldcur = cursor;
 		}
+		oldcur = cursor;
+	}
 }
 
 static int osfirst[2];
 static int oslast[2];
-clr_oldlines() {
+clr_oldlines()
+{
 	osfirst[0] = oslast[0] = -1;
 }
-	
+
 
 vid_alter(onoff, which)
 int onoff;		/* turning on or off */
 int which;		/* 0 for first range, 1 for second range */
 {
 	register int index;	/* loop through selected list */
-		
+
 	if( sel_last < 0 ) {
 		show_subtree( sel_node, onoff, TRUE );
 		osfirst[which] = find_line_number(curr_window, sel_node,
-				(int *)NULL, &(oslast[which]) );
-		}
-	 else {
+		                                  (int *)NULL, &(oslast[which]) );
+	} else {
 		int dummy;
 
 		osfirst[which]=find_line_number( curr_window, node_kid(sel_node,
-			sel_first), (int*)0, &dummy );
+		                                 sel_first), (int*)0, &dummy );
 		dummy = find_line_number( curr_window, node_kid(sel_node,
-			sel_last), (int*)0, &oslast[which] );
+		                          sel_last), (int*)0, &oslast[which] );
 		for( index = sel_first; index <= sel_last; index++ )
 			show_subtree(node_kid(sel_node,index), onoff, TRUE );
-		}
+	}
 	if( osfirst[which] < 0 )
 		osfirst[which] = 0;
 	/* if it is the second one, do the job */
@@ -603,14 +604,14 @@ int which;		/* 0 for first range, 1 for second range */
 		if( osfirst[0] < 0 ) {
 			/* if nothing else, set to first line */
 			osfirst[0] = oslast[0] = osfirst[1];
-			}
+		}
 		loopset( win, osfirst[0], osfirst[1] );
 		loopset( win, oslast[0], oslast[1] );
-		
-		}
+
+	}
 }
 
-	/* set change bit in a given range any order */
+/* set change bit in a given range any order */
 loopset( win, bound1, bound2 )
 alice_window *win;
 int bound1, bound2;
@@ -624,10 +625,10 @@ int bound1, bound2;
 
 
 }
-show_subtree(xthenode, mode, linemark )
-nodep xthenode;		/* node to highlight */
-int mode;		/* set or clear */
-reg int linemark;		/* should we mark the change */
+show_subtree(nodep xthenode, int mode, reg int linemark )
+//nodep xthenode;		/* node to highlight */
+//int mode;		/* set or clear */
+//reg int linemark;		/* should we mark the change */
 {
 	register nodep thenode;
 	register int i;
@@ -643,18 +644,18 @@ reg int linemark;		/* should we mark the change */
 	if( not_a_list(thenode) ) {
 		if( mode )
 			s_node_flag(thenode, NF_STANDOUT | node_flag(thenode));
-		 else
+		else
 			s_node_flag(thenode, ~NF_STANDOUT & node_flag(thenode));
 #ifdef OldSel
-		 if( linemark ) {
+		if( linemark ) {
 			mark_line( thenode, size_in_lines(thenode) ?
-				mtype : SMALL_CHANGE);
+			           mtype : SMALL_CHANGE);
 			linemark = FALSE;
-			}
-#endif OldSel
 		}
-	
-		
+#endif OldSel
+	}
+
+
 	imax = n_num_children(thenode);
 
 #ifdef OldSel
@@ -662,15 +663,15 @@ reg int linemark;		/* should we mark the change */
 		mark_line( thenode, mtype );
 		/* make sure parenting line gets updated, no matter what */
 		mark_line( tparent(thenode), SMALL_CHANGE );
-		}
+	}
 #endif Oldsel
 	for( i = 0; i < imax; i++ ) {
 		show_subtree( node_kid(thenode, i), mode, linemark );
-		}
+	}
 }
 
 
-nodep 
+nodep
 l_hcalc( xwptr )
 struct scr_line *xwptr;
 {

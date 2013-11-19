@@ -73,7 +73,7 @@ char *cline;
 		ascii_output = TRUE;
 		slmessage( ER(227,"Printing to file %s"), fname );
 
-		clear_break();
+		//clear_break();
 		disp_lines( curr_window, 0, 99, cur_work_top, 0, 0 );
 		ascii_output = FALSE;
 #endif DEMO

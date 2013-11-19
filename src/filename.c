@@ -5,7 +5,7 @@
 #include "menu.h"
 #include "jump.h"
 #include <stdlib.h>
-
+#include <string.h>
 /*
  *DESC: Handle file interfaces with the operating system -- directories,
  *DESC: menus of files, file searching etc.
@@ -138,6 +138,8 @@ int	filesInMenu;		/* display files in menu if necessary */
 static char dotdotDir[] = ".. <dir>";
 #endif
 
+
+#define NAME_MAX 16
 static
 buildFileMenu(mp, filesInMenu)
 struct menu_data	*mp;
@@ -153,7 +155,7 @@ int	filesInMenu;
 	 */
 	struct stat	statbuf;
 	char	namebuf[NAME_MAX+2];
-	DIR *d;
+	/*DIR*/int d;
 	struct dirent *dent;
 
 	new_menu(mp, "Files");

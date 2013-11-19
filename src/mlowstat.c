@@ -70,7 +70,8 @@
 	 case Main(N_EXP_SHR):
 		temp1 = int_spop();
 		/* shift must be a logical shift */
-		((unsigned)int_stop) >>= temp1;
+		//((unsigned)int_stop) >>= temp1;
+                (int_stop) >>= temp1;
 		break;
 #endif
 
