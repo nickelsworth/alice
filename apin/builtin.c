@@ -111,10 +111,10 @@ ssymnode fldtypecode = {N_DECL_ID, Basetype(BT_anytype), NLF, NNC("TypeCode"),
 		T_FIELD, HashByte, &fldsize, Basetype(BT_integer),
 		sizeof(double)+sizeof(rint), sizeof(rint), 0, Mflgs, -119 };
 
-extern node recsymt;
+static node recsymt = { N_SYMBOL_TABLE, NCAST &BT_anytype, NLF, (nodep)&fldtypecode };
+
 struct node3 BT_anytype = { N_TYP_RECORD, NIL, NLF, NIL, &recsymt,
 			NCAST sizeof(struct anyvar) };
-static node recsymt = { N_SYMBOL_TABLE, NCAST &BT_anytype, NLF, (nodep)&fldtypecode };
 symnode SP_string = {N_DECL_ID, NIL, NLF, NNC("String"), T_BTYPE, HashByte,
 	&fldtypecode, Basetype(SP_string), 0, sizeof(pointer), 0, Mflgs, 0 };
 symnode SP_variable = { N_DECL_ID, NIL, NLF, NNC("Variable"), T_BTYPE, HashByte,
@@ -618,7 +618,9 @@ ssymnode nd24 = { N_DECL_ID, NIL, NLF, NNC("StrEnd"), T_BCONST, HashByte,
 static rfloat our_pi = FLOATNUM(3.14159265358979323846);
 
 symnode ndpi = { N_DECL_ID, NIL, NLF, NNC("Pi"), T_BCONST, HashByte,
-	&nd24, Basetype(BT_real), (pint)&our_pi, sizeof(rfloat),0, Mflgs, -76 };
+		 &nd24, Basetype(BT_real), NIL/*(pint)&our_pi*/, sizeof(long),0, Mflgs, -76 };
+
+
 ssymnode nd25 = { N_DECL_ID, NCAST &r_strcat, NLF, NNC("StrConcat"), T_BTPROC, HashByte,
 			&ndpi, Basetype(SP_proc), 0, 0, 0, Mflgs, -24 };
 ssymnode nd26 = { N_DECL_ID, NCAST &r_strdelete, NLF, NNC("StrDelete"), T_BTPROC, HashByte,

@@ -27,9 +27,6 @@
 #include "class.h"
 #include "tune.h"
 #include "node.h"
-#ifdef QNX
-char	NodeStart;
-#endif
 static char *PNULL[] =  {"!c", 0} ;
 
 static struct node_info sNULL = { PNULL, NILCHL,F_LINE, 0,1, 1};

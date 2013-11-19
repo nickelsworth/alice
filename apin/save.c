@@ -56,7 +56,7 @@ int safetest;		/* should we test if it exists? */
 
 #ifndef NOT_EDITOR
 	if( safetest && !access( name, 0 ) && !com_menu( M_save, TRUE ) ) 
-		return;
+		return 0;
 #endif
 
 
