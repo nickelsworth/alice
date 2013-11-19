@@ -52,9 +52,9 @@ SRCS= $(ASRCS) $(BSRCS)
 OBJS= $(EOBJS) $(IOBJS) $(COBJS)
 
 
-CFLAGS=	 -g -I../h 
+CFLAGS=	 -g -I../h -std=gnu89 -Wno-return-type -Wno-extra-tokens -Wno-parentheses -Wno-format -Wno-int-to-pointer-cast -Wno-pointer-sign -Wno-incompatible-library-redeclaration -Wno-incompatible-pointer-types -v
 
-LFLAGS= -g
+LFLAGS= -g -v
 
 CPP = /lib/cpp -I../h -P -Dunix
 
@@ -101,7 +101,7 @@ mload.o: mload.c
 
 interp.o: ../h/interp.h ilowstates.c mlowstat.c interp.c
 	cc $(CFLAGS) -c interp.c
-	
+
 a.out:	$(EOBJS) $(NOBJS) $(COBJS) unix.o
 	cc $(LFLAGS) $(EOBJS) $(IOBJS) $(COBJS) unix.o
 fast:	$(SRCS) unix.c
