@@ -1,0 +1,10 @@
+*.o
+*~
+cscope.out
+alice
+alice.core
+alice.layout
+alice.project
+alice.mk
+alice.tags
+alice.workspace*
