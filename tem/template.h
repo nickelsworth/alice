@@ -1,9 +1,7 @@
 #include <whoami.h>
 #include <stdio.h>
-
-#ifndef QNX
-#include <ctype.h>
-#endif
+#include <string.h>
+#include <stdlib.h>
 
 #include "action.h"
 #include "node.h"

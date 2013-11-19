@@ -1,17 +1,19 @@
-
+FLAGS=   -Wno-return-type -Wno-format -Wno-int-to-pointer-cast
 
 OBJS=	template.o tokentable.o actiontable.o classtable.o nodetable.o
 
 SRCS=   template.c tokentable.c actiontable.c classtable.c nodetable.c
 
+CC = clang -I ../h -std=gnu89
+
 # ../bsrc/bas.tpl: btemplate basic.src
 #	btemplate basic.src ../bsrc/bas.tpl
 
 template: $(OBJS)
-	cc $(OBJS) -o template
+	$(CC) $(FLAGS) $(OBJS) -o template
 
 $(OBJS):
-	cc -c -I ../h $*.c
+	$(CC) $(FLAGS) -c $*.c
 
 aptempla.suf: pascal.src
 	template -l F=130 L=132 pascal.src aptempla.suf

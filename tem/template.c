@@ -1,15 +1,5 @@
-
 #include "template.h"
-
-#ifndef BASIC
-# ifdef QNX
-#  include "tune.h"			/* QNX: BASIC, Pascal */
-# else
-#  include "/u/alice/h/tune.h"		/* XENIX: Pascal */
-# endif
-#else
-#  include "/u/alice/bh/tune.h" 	/* XENIX: BASIC */
-#endif
+#include "../h/tune.h"
 
 typedef short int16;			/* 16 bit integer */
 
